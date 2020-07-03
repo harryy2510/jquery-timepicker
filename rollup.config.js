@@ -28,6 +28,7 @@ export default {
       targets: [
         { src: 'src/static/jquery.timepicker.css', dest: './' },
         { src: 'src/static/jquery.timepicker.css', dest: './', rename: 'jquery.timepicker.min.css' },
+        { src: 'src/jquery.timepicker.d.ts', dest: './' },
       ]
     }),
     babel({ babelHelpers: 'bundled' })
