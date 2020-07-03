@@ -177,8 +177,10 @@ import { ONE_DAY } from "./timepicker/constants.js";
       }
 
       // if not found or disabled, intelligently find first selectable element
-      if (!selected.length || selected.hasClass("ui-timepicker-disabled")) {
-        selected = list.find("li:not(.ui-timepicker-disabled):first");
+      // if (!selected.length || selected.hasClass("ui-timepicker-disabled")) {
+      if (!selected.length) {
+        // selected = list.find("li:not(.ui-timepicker-disabled):first");
+        selected = list.find("li:first");
       }
 
       if (selected && selected.length) {
@@ -994,9 +996,9 @@ console.log(timeValue)
 
     var cursor = list.find(".ui-timepicker-selected");
 
-    if (cursor.hasClass("ui-timepicker-disabled")) {
-      return false;
-    }
+    // if (cursor.hasClass("ui-timepicker-disabled")) {
+    //   return false;
+    // }
 
     if (cursor.length) {
       // selected value found
