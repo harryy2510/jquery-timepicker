@@ -206,6 +206,7 @@
     closeOnWindowScroll: false,
     disableTextInput: false,
     disableTimeRanges: [],
+    unavailableTimeRanges: [],
     disableTouchKeyboard: false,
     durationTime: null,
     forceRoundTime: false,
@@ -389,6 +390,29 @@
             if (settings.disableTimeRanges[i][0] <= settings.disableTimeRanges[i - 1][1]) {
               settings.disableTimeRanges[i - 1] = [Math.min(settings.disableTimeRanges[i][0], settings.disableTimeRanges[i - 1][0]), Math.max(settings.disableTimeRanges[i][1], settings.disableTimeRanges[i - 1][1])];
               settings.disableTimeRanges.splice(i, 1);
+            }
+          }
+        }
+
+        if (!settings.unavailableTimeRanges) {
+          settings.unavailableTimeRanges = [];
+        }
+
+        if (settings.unavailableTimeRanges.length > 0) {
+          // convert string times to integers
+          for (var i in settings.unavailableTimeRanges) {
+            settings.unavailableTimeRanges[i] = [this.time2int(settings.unavailableTimeRanges[i][0]), this.time2int(settings.unavailableTimeRanges[i][1])];
+          } // sort by starting time
+
+
+          settings.unavailableTimeRanges = settings.unavailableTimeRanges.sort(function (a, b) {
+            return a[0] - b[0];
+          }); // merge any overlapping ranges
+
+          for (var i = settings.unavailableTimeRanges.length - 1; i > 0; i--) {
+            if (settings.unavailableTimeRanges[i][0] <= settings.unavailableTimeRanges[i - 1][1]) {
+              settings.unavailableTimeRanges[i - 1] = [Math.min(settings.unavailableTimeRanges[i][0], settings.unavailableTimeRanges[i - 1][0]), Math.max(settings.unavailableTimeRanges[i][1], settings.unavailableTimeRanges[i - 1][1])];
+              settings.unavailableTimeRanges.splice(i, 1);
             }
           }
         }
@@ -849,6 +873,9 @@
       var dr = settings.disableTimeRanges;
       var drCur = 0;
       var drLen = dr.length;
+      var ur = settings.unavailableTimeRanges;
+      var urCur = 0;
+      var urLen = ur.length;
       var stepFunc = settings.step;
 
       if (typeof stepFunc != "function") {
@@ -899,6 +926,16 @@
             } else {
               row.addClass("ui-timepicker-disabled");
             }
+          }
+        }
+
+        if (urCur < urLen) {
+          if (timeInt >= ur[urCur][1]) {
+            urCur += 1;
+          }
+
+          if (ur[urCur] && timeInt >= ur[urCur][0] && timeInt < ur[urCur][1]) {
+            row.addClass("ui-timepicker-unavailable");
           }
         }
 
@@ -1061,8 +1098,6 @@
       if (timeValue === null) {
         return;
       }
-
-      console.log(timeValue);
 
       var selected = _findRow(self, list, timeValue);
 
@@ -1531,6 +1566,7 @@
       closeOnWindowScroll: false,
       disableTextInput: false,
       disableTimeRanges: [],
+      unavailableTimeRanges: [],
       disableTouchKeyboard: false,
       durationTime: null,
       forceRoundTime: false,

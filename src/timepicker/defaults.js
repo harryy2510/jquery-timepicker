@@ -6,6 +6,7 @@ const DEFAULT_SETTINGS = {
   closeOnWindowScroll: false,
   disableTextInput: false,
   disableTimeRanges: [],
+  unavailableTimeRanges: [],
   disableTouchKeyboard: false,
   durationTime: null,
   forceRoundTime: false,

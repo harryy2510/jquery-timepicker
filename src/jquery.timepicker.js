@@ -177,10 +177,8 @@ import { ONE_DAY } from "./timepicker/constants.js";
       }
 
       // if not found or disabled, intelligently find first selectable element
-      // if (!selected.length || selected.hasClass("ui-timepicker-disabled")) {
-      if (!selected.length) {
-        // selected = list.find("li:not(.ui-timepicker-disabled):first");
-        selected = list.find("li:first");
+      if (!selected.length || selected.hasClass("ui-timepicker-disabled")) {
+        selected = list.find("li:not(.ui-timepicker-disabled):first");
       }
 
       if (selected && selected.length) {
@@ -471,6 +469,10 @@ import { ONE_DAY } from "./timepicker/constants.js";
     var drCur = 0;
     var drLen = dr.length;
 
+    var ur = settings.unavailableTimeRanges;
+    var urCur = 0;
+    var urLen = ur.length;
+
     var stepFunc = settings.step;
     if (typeof stepFunc != "function") {
       stepFunc = function() {
@@ -521,6 +523,16 @@ import { ONE_DAY } from "./timepicker/constants.js";
           } else {
             row.addClass("ui-timepicker-disabled");
           }
+        }
+      }
+
+      if (urCur < urLen) {
+        if (timeInt >= ur[urCur][1]) {
+          urCur += 1;
+        }
+
+        if (ur[urCur] && timeInt >= ur[urCur][0] && timeInt < ur[urCur][1]) {
+          row.addClass("ui-timepicker-unavailable");
         }
       }
 
@@ -690,7 +702,6 @@ import { ONE_DAY } from "./timepicker/constants.js";
     if (timeValue === null) {
       return;
     }
-console.log(timeValue)
     var selected = _findRow(self, list, timeValue);
     if (selected) {
       var topDelta = selected.offset().top - list.offset().top;
@@ -996,9 +1007,9 @@ console.log(timeValue)
 
     var cursor = list.find(".ui-timepicker-selected");
 
-    // if (cursor.hasClass("ui-timepicker-disabled")) {
-    //   return false;
-    // }
+    if (cursor.hasClass("ui-timepicker-disabled")) {
+      return false;
+    }
 
     if (cursor.length) {
       // selected value found
@@ -1162,6 +1173,7 @@ console.log(timeValue)
     closeOnWindowScroll: false,
     disableTextInput: false,
     disableTimeRanges: [],
+    unavailableTimeRanges: [],
     disableTouchKeyboard: false,
     durationTime: null,
     forceRoundTime: false,
