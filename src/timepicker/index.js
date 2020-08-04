@@ -58,9 +58,9 @@ class Timepicker {
     var minutes = time[5] * 1 || 0;
     var seconds = time[7] * 1 || 0;
 
-    if (!ampm && time[3].length == 2 && time[3][0] == '0') {
+    if (!ampm && time[3].length == 2 && time[3][0] == "0") {
       // preceding '0' implies AM
-      ampm = 'am';
+      ampm = "am";
     }
 
     if (hour <= 12 && ampm) {
@@ -170,8 +170,8 @@ class Timepicker {
 
       // sort by starting time
       settings.disableTimeRanges = settings.disableTimeRanges.sort(function(
-          a,
-          b
+        a,
+        b
       ) {
         return a[0] - b[0];
       });
@@ -179,17 +179,17 @@ class Timepicker {
       // merge any overlapping ranges
       for (var i = settings.disableTimeRanges.length - 1; i > 0; i--) {
         if (
-            settings.disableTimeRanges[i][0] <=
-            settings.disableTimeRanges[i - 1][1]
+          settings.disableTimeRanges[i][0] <=
+          settings.disableTimeRanges[i - 1][1]
         ) {
           settings.disableTimeRanges[i - 1] = [
             Math.min(
-                settings.disableTimeRanges[i][0],
-                settings.disableTimeRanges[i - 1][0]
+              settings.disableTimeRanges[i][0],
+              settings.disableTimeRanges[i - 1][0]
             ),
             Math.max(
-                settings.disableTimeRanges[i][1],
-                settings.disableTimeRanges[i - 1][1]
+              settings.disableTimeRanges[i][1],
+              settings.disableTimeRanges[i - 1][1]
             )
           ];
           settings.disableTimeRanges.splice(i, 1);
@@ -211,27 +211,26 @@ class Timepicker {
       }
 
       // sort by starting time
-      settings.unavailableTimeRanges = settings.unavailableTimeRanges.sort(function(
-          a,
-          b
-      ) {
-        return a[0] - b[0];
-      });
+      settings.unavailableTimeRanges = settings.unavailableTimeRanges.sort(
+        function(a, b) {
+          return a[0] - b[0];
+        }
+      );
 
       // merge any overlapping ranges
       for (var i = settings.unavailableTimeRanges.length - 1; i > 0; i--) {
         if (
-            settings.unavailableTimeRanges[i][0] <=
-            settings.unavailableTimeRanges[i - 1][1]
+          settings.unavailableTimeRanges[i][0] <=
+          settings.unavailableTimeRanges[i - 1][1]
         ) {
           settings.unavailableTimeRanges[i - 1] = [
             Math.min(
-                settings.unavailableTimeRanges[i][0],
-                settings.unavailableTimeRanges[i - 1][0]
+              settings.unavailableTimeRanges[i][0],
+              settings.unavailableTimeRanges[i - 1][0]
             ),
             Math.max(
-                settings.unavailableTimeRanges[i][1],
-                settings.unavailableTimeRanges[i - 1][1]
+              settings.unavailableTimeRanges[i][1],
+              settings.unavailableTimeRanges[i - 1][1]
             )
           ];
           settings.unavailableTimeRanges.splice(i, 1);

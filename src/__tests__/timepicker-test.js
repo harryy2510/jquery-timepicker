@@ -16,8 +16,6 @@ test("time2int works", () => {
 
   const tp = new Timepicker(el);
 
-  expect(tp.time2int('00')).toEqual(0);
-  expect(tp.time2int('43200')).toEqual(0);
+  expect(tp.time2int("00")).toEqual(0);
+  expect(tp.time2int("43200")).toEqual(0);
 });
-
-

@@ -283,9 +283,9 @@
         var minutes = time[5] * 1 || 0;
         var seconds = time[7] * 1 || 0;
 
-        if (!ampm && time[3].length == 2 && time[3][0] == '0') {
+        if (!ampm && time[3].length == 2 && time[3][0] == "0") {
           // preceding '0' implies AM
-          ampm = 'am';
+          ampm = "am";
         }
 
         if (hour <= 12 && ampm) {
@@ -602,8 +602,10 @@
         }
 
         if (selected && selected.length) {
-          var topOffset = list.scrollTop() + selected.position().top - selected.outerHeight();
-          list.scrollTop(topOffset);
+          selected[0].scrollIntoView({
+            block: 'nearest',
+            inline: 'start'
+          });
         } else {
           list.scrollTop(0);
         } // prevent scroll propagation
@@ -898,6 +900,7 @@
           var row = $("<li />");
           row.addClass(timeInt % ONE_DAY < ONE_DAY / 2 ? "ui-timepicker-am" : "ui-timepicker-pm");
           row.data("time", roundingFunction(timeInt, settings));
+          row.data("index", j);
           row.text(timeString);
         }
 
@@ -1102,11 +1105,10 @@
       var selected = _findRow(self, list, timeValue);
 
       if (selected) {
-        var topDelta = selected.offset().top - list.offset().top;
-
-        if (topDelta + selected.outerHeight() > list.outerHeight() || topDelta < 0) {
-          list.scrollTop(list.scrollTop() + selected.position().top - selected.outerHeight());
-        }
+        selected[0].scrollIntoView({
+          block: 'nearest',
+          inline: 'start'
+        });
 
         if (settings.forceRoundTime || selected.data("time") === timeValue) {
           selected.addClass("ui-timepicker-selected");
@@ -1232,6 +1234,44 @@
           e.preventDefault();
       }
     }
+
+    function selectNextSibling(list, direction) {
+      var selected = list.find(".ui-timepicker-selected");
+      var li = list.find("li");
+
+      if (!selected.length) {
+        li.each(function (i, obj) {
+          var item = $(obj);
+
+          if (item.position().top > 0 && !item.hasClass("ui-timepicker-disabled")) {
+            selected = item;
+            return false;
+          }
+        });
+      } else {
+        var index = selected.data().index;
+
+        while (index >= 0 && index <= li.length && li[index]) {
+          var item = $(li[index]);
+
+          if (!item.hasClass("ui-timepicker-disabled") && !item.hasClass("ui-timepicker-selected")) {
+            selected = item;
+            break;
+          }
+
+          index += direction;
+        }
+      }
+
+      if (selected) {
+        li.removeClass("ui-timepicker-selected");
+        selected.addClass("ui-timepicker-selected");
+        selected[0].scrollIntoView({
+          block: 'nearest',
+          inline: 'start'
+        });
+      }
+    }
     /*
      *  Keyboard navigation via arrow keys
      */
@@ -1271,48 +1311,12 @@
 
         case 38:
           // up
-          var selected = list.find(".ui-timepicker-selected");
-
-          if (!selected.length) {
-            list.find("li").each(function (i, obj) {
-              if ($(obj).position().top > 0) {
-                selected = $(obj);
-                return false;
-              }
-            });
-            selected.addClass("ui-timepicker-selected");
-          } else if (!selected.is(":first-child")) {
-            selected.removeClass("ui-timepicker-selected");
-            selected.prev().addClass("ui-timepicker-selected");
-
-            if (selected.prev().position().top < selected.outerHeight()) {
-              list.scrollTop(list.scrollTop() - selected.outerHeight());
-            }
-          }
-
+          selectNextSibling(list, -1);
           return false;
 
         case 40:
           // down
-          selected = list.find(".ui-timepicker-selected");
-
-          if (selected.length === 0) {
-            list.find("li").each(function (i, obj) {
-              if ($(obj).position().top > 0) {
-                selected = $(obj);
-                return false;
-              }
-            });
-            selected.addClass("ui-timepicker-selected");
-          } else if (!selected.is(":last-child")) {
-            selected.removeClass("ui-timepicker-selected");
-            selected.next().addClass("ui-timepicker-selected");
-
-            if (selected.next().position().top + 2 * selected.outerHeight() > list.outerHeight()) {
-              list.scrollTop(list.scrollTop() + selected.outerHeight());
-            }
-          }
-
+          selectNextSibling(list, 1);
           return false;
 
         case 27:

@@ -64,9 +64,6 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .ui-timepicker-list li.ui-timepicker-selected.ui-timepicker-disabled {
 	color: #888;
 	cursor: default;
+	pointer-events: none;
 }
 
-.ui-timepicker-list li.ui-timepicker-disabled:hover,
-.ui-timepicker-list li.ui-timepicker-selected.ui-timepicker-disabled {
-	background: #f2f2f2;
-}
