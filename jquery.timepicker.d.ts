@@ -45,6 +45,12 @@ declare namespace Jt.Timepicker {
          */
         unavailableTimeRanges?: Array<string[]>;
         /**
+         * Default: []
+         * Mark certain time ranges available. Input is an array of time pairs, like `[['3:00am', '4:30am'], ['5:00pm', '8:00pm']].
+         * The start of the interval will be marked available but the end won't.
+         */
+        availableTimeRanges?: Array<string[]>;
+        /**
          * Default: false
          * Disables the onscreen keyboard for touch devices. There can be instances where Firefox or Chrome have touch events enabled
          * (such as on Surface tablets but not actually be a touch device. In this case disableTouchKeyboard will prevent the timepicker

@@ -1,5 +1,5 @@
 /*!
- * jquery-timepicker v1.13.15 - A jQuery timepicker plugin inspired by Google Calendar. It supports both mouse and keyboard navigation.
+ * jquery-timepicker v1.13.18 - A jQuery timepicker plugin inspired by Google Calendar. It supports both mouse and keyboard navigation.
  * Copyright (c) 2020 Jon Thornton - https://www.jonthornton.com/jquery-timepicker/
  * License: MIT
  */
@@ -207,6 +207,7 @@
     disableTextInput: false,
     disableTimeRanges: [],
     unavailableTimeRanges: [],
+    availableTimeRanges: [],
     disableTouchKeyboard: false,
     durationTime: null,
     forceRoundTime: false,
@@ -878,6 +879,9 @@
       var ur = settings.unavailableTimeRanges;
       var urCur = 0;
       var urLen = ur.length;
+      var ar = settings.availableTimeRanges;
+      var arCur = 0;
+      var arLen = ar.length;
       var stepFunc = settings.step;
 
       if (typeof stepFunc != "function") {
@@ -939,6 +943,16 @@
 
           if (ur[urCur] && timeInt >= ur[urCur][0] && timeInt < ur[urCur][1]) {
             row.addClass("ui-timepicker-unavailable");
+          }
+        }
+
+        if (arCur < arLen) {
+          if (timeInt >= ar[arCur][1]) {
+            arCur += 1;
+          }
+
+          if (ar[arCur] && timeInt >= ar[arCur][0] && timeInt < ar[arCur][1]) {
+            row.addClass("ui-timepicker-available");
           }
         }
 
@@ -1571,6 +1585,7 @@
       disableTextInput: false,
       disableTimeRanges: [],
       unavailableTimeRanges: [],
+      availableTimeRanges: [],
       disableTouchKeyboard: false,
       durationTime: null,
       forceRoundTime: false,
