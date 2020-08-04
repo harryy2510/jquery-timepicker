@@ -39,6 +39,12 @@ declare namespace Jt.Timepicker {
          */
         disableTimeRanges?: Array<string[]>;
         /**
+         * Default: []
+         * Mark certain time ranges unavailable. Input is an array of time pairs, like `[['3:00am', '4:30am'], ['5:00pm', '8:00pm']].
+         * The start of the interval will be marked unavailable but the end won't.
+         */
+        unavailableTimeRanges?: Array<string[]>;
+        /**
          * Default: false
          * Disables the onscreen keyboard for touch devices. There can be instances where Firefox or Chrome have touch events enabled
          * (such as on Surface tablets but not actually be a touch device. In this case disableTouchKeyboard will prevent the timepicker
@@ -63,7 +69,7 @@ declare namespace Jt.Timepicker {
         listWidth?: number;
         /**
          * Default: null
-         * Set this to override CSS styling and set the list width to match the input element's width. Set to 1 to match input width, 2 to double input width, .5 to halve input width, etc. Set to `null` to let CSS determine the list width. 
+         * Set this to override CSS styling and set the list width to match the input element's width. Set to 1 to match input width, 2 to double input width, .5 to halve input width, etc. Set to `null` to let CSS determine the list width.
          */
         maxTime?: Date | string;
         /**
