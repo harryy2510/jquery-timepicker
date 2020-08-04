@@ -238,6 +238,47 @@ class Timepicker {
       }
     }
 
+    if (!settings.availableTimeRanges) {
+      settings.availableTimeRanges = [];
+    }
+
+    if (settings.availableTimeRanges.length > 0) {
+      // convert string times to integers
+      for (var i in settings.availableTimeRanges) {
+        settings.availableTimeRanges[i] = [
+          this.time2int(settings.availableTimeRanges[i][0]),
+          this.time2int(settings.availableTimeRanges[i][1])
+        ];
+      }
+
+      // sort by starting time
+      settings.availableTimeRanges = settings.availableTimeRanges.sort(
+        function(a, b) {
+          return a[0] - b[0];
+        }
+      );
+
+      // merge any overlapping ranges
+      for (var i = settings.availableTimeRanges.length - 1; i > 0; i--) {
+        if (
+          settings.availableTimeRanges[i][0] <=
+          settings.availableTimeRanges[i - 1][1]
+        ) {
+          settings.availableTimeRanges[i - 1] = [
+            Math.min(
+              settings.availableTimeRanges[i][0],
+              settings.availableTimeRanges[i - 1][0]
+            ),
+            Math.max(
+              settings.availableTimeRanges[i][1],
+              settings.availableTimeRanges[i - 1][1]
+            )
+          ];
+          settings.availableTimeRanges.splice(i, 1);
+        }
+      }
+    }
+
     return settings;
   }
 }

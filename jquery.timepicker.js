@@ -1,5 +1,5 @@
 /*!
- * jquery-timepicker v1.13.18 - A jQuery timepicker plugin inspired by Google Calendar. It supports both mouse and keyboard navigation.
+ * jquery-timepicker v1.13.19 - A jQuery timepicker plugin inspired by Google Calendar. It supports both mouse and keyboard navigation.
  * Copyright (c) 2020 Jon Thornton - https://www.jonthornton.com/jquery-timepicker/
  * License: MIT
  */
@@ -414,6 +414,29 @@
             if (settings.unavailableTimeRanges[i][0] <= settings.unavailableTimeRanges[i - 1][1]) {
               settings.unavailableTimeRanges[i - 1] = [Math.min(settings.unavailableTimeRanges[i][0], settings.unavailableTimeRanges[i - 1][0]), Math.max(settings.unavailableTimeRanges[i][1], settings.unavailableTimeRanges[i - 1][1])];
               settings.unavailableTimeRanges.splice(i, 1);
+            }
+          }
+        }
+
+        if (!settings.availableTimeRanges) {
+          settings.availableTimeRanges = [];
+        }
+
+        if (settings.availableTimeRanges.length > 0) {
+          // convert string times to integers
+          for (var i in settings.availableTimeRanges) {
+            settings.availableTimeRanges[i] = [this.time2int(settings.availableTimeRanges[i][0]), this.time2int(settings.availableTimeRanges[i][1])];
+          } // sort by starting time
+
+
+          settings.availableTimeRanges = settings.availableTimeRanges.sort(function (a, b) {
+            return a[0] - b[0];
+          }); // merge any overlapping ranges
+
+          for (var i = settings.availableTimeRanges.length - 1; i > 0; i--) {
+            if (settings.availableTimeRanges[i][0] <= settings.availableTimeRanges[i - 1][1]) {
+              settings.availableTimeRanges[i - 1] = [Math.min(settings.availableTimeRanges[i][0], settings.availableTimeRanges[i - 1][0]), Math.max(settings.availableTimeRanges[i][1], settings.availableTimeRanges[i - 1][1])];
+              settings.availableTimeRanges.splice(i, 1);
             }
           }
         }
