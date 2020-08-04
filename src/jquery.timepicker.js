@@ -471,6 +471,10 @@ import { ONE_DAY } from "./timepicker/constants.js";
     var urCur = 0;
     var urLen = ur.length;
 
+    var ar = settings.availableTimeRanges;
+    var arCur = 0;
+    var arLen = ar.length;
+
     var stepFunc = settings.step;
     if (typeof stepFunc != "function") {
       stepFunc = function() {
@@ -532,6 +536,16 @@ import { ONE_DAY } from "./timepicker/constants.js";
 
         if (ur[urCur] && timeInt >= ur[urCur][0] && timeInt < ur[urCur][1]) {
           row.addClass("ui-timepicker-unavailable");
+        }
+      }
+
+      if (arCur < arLen) {
+        if (timeInt >= ar[arCur][1]) {
+          arCur += 1;
+        }
+
+        if (ar[arCur] && timeInt >= ar[arCur][0] && timeInt < ar[arCur][1]) {
+          row.addClass("ui-timepicker-available");
         }
       }
 
@@ -1158,6 +1172,7 @@ import { ONE_DAY } from "./timepicker/constants.js";
     disableTextInput: false,
     disableTimeRanges: [],
     unavailableTimeRanges: [],
+    availableTimeRanges: [],
     disableTouchKeyboard: false,
     durationTime: null,
     forceRoundTime: false,

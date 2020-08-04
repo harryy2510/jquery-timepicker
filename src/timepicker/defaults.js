@@ -7,6 +7,7 @@ const DEFAULT_SETTINGS = {
   disableTextInput: false,
   disableTimeRanges: [],
   unavailableTimeRanges: [],
+  availableTimeRanges: [],
   disableTouchKeyboard: false,
   durationTime: null,
   forceRoundTime: false,
